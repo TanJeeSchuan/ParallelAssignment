@@ -1,4 +1,5 @@
 #pragma once
+#define cimg_use_png 1
 #include "CImg.h"
 #include "ImageData.h"
 

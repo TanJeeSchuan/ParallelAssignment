@@ -1,5 +1,5 @@
-#define cimg_use_png
-#include "CImg.h"
+//#define cimg_use_png 1
+//#include "CImg.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -43,7 +43,7 @@ int main()
     PerformanceProfiler profiler;
     OtsuThreshold otsuThreshold;
 
-    ImageIO::loadImage("klcc.bmp", &imageData);
+    ImageIO::loadImage("klcc.png", &imageData);
 
     //OtsuThreshold::greyscaleImage(&imageData, &outputData);
     //double greyscaleSpeed = profiler.profileFunction(greyscaleImage, &imageData, &outputData);
