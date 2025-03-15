@@ -12,15 +12,25 @@ class PerformanceProfiler
     };
 
 public:
-
     template <typename Func, typename... Args>
     double profileFunction(Func&& func, Args&&... args)
     {
         double start = omp_get_wtime(), end = 0;
 
-        std::forward<Func>(func)(std::forward<Args>(args)...);
+        if constexpr (std::is_void_v<std::invoke_result_t<Func, Args...>>) {
+            func(std::forward<Args>(args)...);
+            end = omp_get_wtime();
+            return end - start;
+        }
+        else {
+            auto result = func(std::forward<Args>(args)...);
+            end = omp_get_wtime();
+            return end - start;
+        }
 
-        end = omp_get_wtime();
-        return end - start;
+        //std::forward<Func>(func)(std::forward<Args>(args)...);
+
+        //end = omp_get_wtime();
+        //return end - start;
     }
 };

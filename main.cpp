@@ -41,26 +41,26 @@ int main()
     ImageData outputData{};
 
     PerformanceProfiler profiler;
-    OtsuThreshold otsuThreshold;
+    //OtsuThreshold otsuThreshold;
 
-    ImageIO::loadImage("klcc.png", &imageData);
+    ImageIO::loadImage("train.png", &imageData);
 
     //OtsuThreshold::greyscaleImage(&imageData, &outputData);
-    //double greyscaleSpeed = profiler.profileFunction(greyscaleImage, &imageData, &outputData);
-    //std::cout << "Greyscale function runs in " << greyscaleSpeed << " seconds\n";
+    double greyscaleSpeed = profiler.profileFunction(&OtsuThreshold::greyscaleImage, &imageData, &outputData);
+    std::cout << "Greyscale function runs in " << greyscaleSpeed << " seconds\n";
 
-    double greyscaleSpeed = 0;
-    otsuThreshold.greyscaleImage(&imageData, &outputData);
+    //double greyscaleSpeed = 0;
+    //otsuThreshold.greyscaleImage(&imageData, &outputData);
     std::cout << "Greyscale function runs in " << greyscaleSpeed << " seconds\n";
     //otsuThreshold.greyscaleImage(&imageData, &outputData);
     //MEASURE_PERFORMANCE(greyscaleImage(&imageData, &outputData);, "Greyscale");
 
     std::map<int, int> hist;
-    hist = otsuThreshold.generateHistogram(&outputData);
+    hist = OtsuThreshold::generateHistogram(&outputData);
     //MEASURE_PERFORMANCE(hist = generateHistogram(&outputData, true); , "Generate Histogram");
 
     double targetThreshold = 0;
-    targetThreshold = otsuThreshold.otsuThreshold(hist, outputData.size);
+    targetThreshold = OtsuThreshold::otsuThreshold(hist, outputData.size);
     //MEASURE_PERFORMANCE(targetThreshold = otsuThreshold(hist, imageData.size);, "Otsu's Thresholding");
 
     //MEASURE_PERFORMANCE(targetThreshold = otsuThreshold_v2(hist, imageSize); , "Otsu's Thresholding (Paralleized)");
@@ -69,11 +69,11 @@ int main()
     std::cout << "\nTarget Threshold: " << targetThreshold << std::endl;
 
     //MEASURE_PERFORMANCE(applyThresholding(&outputData, &outputData, targetThreshold, { 0,0,0 }, { 255,255,255 });, "Apply Thresholding")
-    otsuThreshold.applyThresholding(&outputData, &outputData, targetThreshold, { 0,0,0 }, { 255,255,255 });
+    OtsuThreshold::applyThresholding(&outputData, &outputData, targetThreshold, { 0,0,0 }, { 255,255,255 });
     
-    cimg_library::CImg<unsigned char> outImg = cimg_library::CImg<unsigned char>(outputData.width, outputData.height, 1, 3, 0);;
-    ImageIO::saveImage("klccout.bmp", &outputData, &outImg);
-    outImg.display();
+    //cimg_library::CImg<unsigned char> outImg = cimg_library::CImg<unsigned char>(outputData.width, outputData.height, 1, 3, 0);;
+    ImageIO::saveImage("trainout.png", &outputData);
+    //outImg.display();
 
     return 0;
 }
