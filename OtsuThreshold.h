@@ -9,8 +9,9 @@ namespace OtsuThreshold
     extern void greyscaleImage(ImageData* inputData, ImageData* out);
 
     //parallize
-    extern std::map<int, int> generateHistogram(ImageData* inputData, bool isGrayScale = true);
+    extern void generateHistogram(ImageData* inputData, std::map<int, int>* histogram);
 
+    extern void otsuThresholdProfile(std::map<int, int> hist, int imageSize, double* thresholdValue);
     extern double otsuThreshold(std::map<int, int> hist, int imageSize);
 
     //assumes image is greyscale

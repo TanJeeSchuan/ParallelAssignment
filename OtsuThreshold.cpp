@@ -1,5 +1,4 @@
 #include "OtsuThreshold.h"
-#include <basetsd.h>
 
 void OtsuThreshold::greyscaleImage(ImageData* inputData, ImageData* out)
 {
@@ -24,28 +23,31 @@ void OtsuThreshold::greyscaleImage(ImageData* inputData, ImageData* out)
 }
 
 //parallize
-std::map<int, int> OtsuThreshold::generateHistogram(ImageData* inputData, bool isGrayScale)
+void OtsuThreshold::generateHistogram(ImageData* inputData, std::map<int, int>* histogram)
 {
-    std::map<int, int> histogram;
-
     for (int i = 0; i < 256; i++) {
-        histogram.insert({ i,0 });
+        histogram->insert({ i,0 });
     }
 
     //if grayscale, rgb values of a pixel are identical
     //chose r as sample
-    for (double i = 0; i < inputData->size; i++) {
+    for (int i = 0; i < inputData->size; i++) {
         double value = inputData->R[i];
-        if (histogram.count(value) > 0)    //contains key
+        if (histogram->count(value) > 0)    //contains key
         {
-            histogram[value]++;
+            (*histogram)[value]++;
         }
         else {
-            histogram.insert({ value, 1 });
+            histogram->insert({ value, 1 });
         }
     }
 
-    return histogram;
+    return;
+}
+
+void OtsuThreshold::otsuThresholdProfile(std::map<int, int> hist, int imageSize, double* thresholdValue)
+{
+    *thresholdValue = otsuThreshold(hist, imageSize);
 }
 
 double OtsuThreshold::otsuThreshold(std::map<int, int> hist, int imageSize) {
