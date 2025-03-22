@@ -45,10 +45,6 @@ void OtsuThreshold::generateHistogram(ImageData* inputData, std::map<int, int>* 
     return;
 }
 
-void OtsuThreshold::otsuThresholdProfile(std::map<int, int> hist, int imageSize, double* thresholdValue)
-{
-    *thresholdValue = otsuThreshold(hist, imageSize);
-}
 
 double OtsuThreshold::otsuThreshold(std::map<int, int> hist, int imageSize) {
     //pre-calculations
